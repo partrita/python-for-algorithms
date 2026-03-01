@@ -1,0 +1,12 @@
+[workspace]
+authors = ["fkt <deepthought@postech.ac.kr>"]
+channels = ["conda-forge"]
+name = "Python-for-Algorithms--Data-Structures--and-Interviews"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = "3.14.*"
+quarto = ">=1.8.27,<2"

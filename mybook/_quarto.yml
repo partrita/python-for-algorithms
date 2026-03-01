@@ -1,0 +1,229 @@
+project:
+  type: book
+
+book:
+  title: "python-algorithms"
+  author: "Norah Jones"
+  date: "3/1/2026"
+  chapters:
+    - index.qmd
+    - part: "01-Algorithm Analysis and Big O"
+      chapters:
+        - 01-Algorithm Analysis and Big O/01-Introduction to Algorithm Analysis and Big O .ipynb
+        - 01-Algorithm Analysis and Big O/02-Big O Notation.ipynb
+        - 01-Algorithm Analysis and Big O/03-Big O Examples .ipynb
+        - 01-Algorithm Analysis and Big O/04-Big O for Python Data Structures.ipynb
+        - 01-Algorithm Analysis and Big O/05-Algorithm Analysis and Big O Quiz.ipynb
+    - part: "02-Array Sequences"
+      chapters:
+        - 02-Array Sequences/01-Introduction to Array Based Sequences.ipynb
+        - 02-Array Sequences/02-Low Level Arrays.ipynb
+        - 02-Array Sequences/03-Dynamic Array.ipynb
+        - 02-Array Sequences/04-Dynamic Array Exercise.ipynb
+        - 02-Array Sequences/05-Amortization.ipynb
+        - 02-Array Sequences/06-Array Mini-Project.ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/01-Anagram-Check/01-Anagram Check - SOLUTION.ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/01-Anagram-Check/01-Anagram Check .ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/02-Array-Pair-Sum/02-Array Pair Sum - SOLUTION.ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/02-Array-Pair-Sum/02-Array Pair Sum .ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/03-Finding-the-Missing-Element/03-Find the Missing Element - SOLUTION.ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/03-Finding-the-Missing-Element/03-Find the Missing Element .ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/04-Largest-Continuous-Sum/04-Largest Continuous Sum - SOLUTION.ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/04-Largest-Continuous-Sum/04-Largest Continuous Sum .ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/05-Sentence-Reversal/05-Sentence Reversal - SOLUTION.ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/05-Sentence-Reversal/05-Sentence Reversal.ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/06-String-Compression/06-String Compression -SOLUTION.ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/06-String-Compression/06-String Compression .ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/07-Unique-Characters-in-String/07-Unique Characters in String - SOLUTION.ipynb
+        - 02-Array Sequences/Array Sequences Interview Questions/07-Unique-Characters-in-String/07-Unique Characters in String.ipynb
+    - part: "03-Stacks, Queues and Deques"
+      chapters:
+        - 03-Stacks, Queues and Deques/01-Stacks, Queues, and Deques Overview.ipynb
+        - 03-Stacks, Queues and Deques/02-Stacks Overview.ipynb
+        - 03-Stacks, Queues and Deques/03-Implementation of Stack.ipynb
+        - 03-Stacks, Queues and Deques/04-Queues Overview.ipynb
+        - 03-Stacks, Queues and Deques/05-Implementation of Queue.ipynb
+        - 03-Stacks, Queues and Deques/06-Deques Overview.ipynb
+        - 03-Stacks, Queues and Deques/07-Implementation of Deque.ipynb
+        - 03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/01-Implement-a-Stack/01-Implement a Stack - SOLUTION.ipynb
+        - 03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/01-Implement-a-Stack/01-Implement a Stack .ipynb
+        - 03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/02-Implement-a-Queue/02-Implement a Queue - SOLUTION.ipynb
+        - 03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/02-Implement-a-Queue/02-Implement a Queue.ipynb
+        - 03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/03-Implement-a-Deque/03-Implement a Deque - SOLUTION.ipynb
+        - 03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/03-Implement-a-Deque/03-Implement a Deque .ipynb
+        - 03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/04-Balanced-Parantheses-Check/04-Balanced Parentheses Check - SOLUTION.ipynb
+        - 03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/04-Balanced-Parantheses-Check/04-Balanced Parentheses Check .ipynb
+        - 03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/05-Implement-a-Queue-Using-Two-Stacks/05-Implement a Queue -Using Two Stacks - SOLUTION.ipynb
+        - 03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/05-Implement-a-Queue-Using-Two-Stacks/05-Implement a Queue -Using Two Stacks .ipynb
+    - part: "04-Linked Lists"
+      chapters:
+        - 04-Linked Lists/01-Linked List Overview.ipynb
+        - 04-Linked Lists/02-Singly Linked Lists.ipynb
+        - 04-Linked Lists/03-Singly Linked List Implementation.ipynb
+        - 04-Linked Lists/04-Doubly Linked Lists.ipynb
+        - 04-Linked Lists/05-Doubly Linked List Implementation.ipynb
+        - 04-Linked Lists/Linked Lists Interview Problems/01-Singly-Linked-List-Cycle-Check/01-Singly Linked List Cycle Check - SOLUTION.ipynb
+        - 04-Linked Lists/Linked Lists Interview Problems/01-Singly-Linked-List-Cycle-Check/01-Singly Linked List Cycle Check.ipynb
+        - 04-Linked Lists/Linked Lists Interview Problems/02-Linked-List-Reversal/02-Linked List Reversal - SOLUTION.ipynb
+        - 04-Linked Lists/Linked Lists Interview Problems/02-Linked-List-Reversal/02-Linked List Reversal .ipynb
+        - 04-Linked Lists/Linked Lists Interview Problems/03-Linked-List-Nth-to-Last-Node/03-Linked List Nth to Last Node - SOLUTION.ipynb
+        - 04-Linked Lists/Linked Lists Interview Problems/03-Linked-List-Nth-to-Last-Node/03-Linked List Nth to Last Node .ipynb
+        - 04-Linked Lists/Linked Lists Interview Problems/04-Implement-a-Doubly-Linked-List/04-Implement a Doubly Linked List.ipynb
+        - 04-Linked Lists/Linked Lists Interview Problems/04-Implement-a-Doubly-Linked-List/04-Implement a Linked List -SOLUTION.ipynb
+        - 04-Linked Lists/Linked Lists Interview Problems/05-Implement-a-Singly-Linked-List/05-Implement a Singly Linked List.ipynb
+    - part: "05-Recursion"
+      chapters:
+        - 05-Recursion/01-Introduction to Recursion.ipynb
+        - 05-Recursion/02-Recursion Homework Example Problems.ipynb
+        - 05-Recursion/03-Recursion Homework Example Problems - SOLUTIONS.ipynb
+        - 05-Recursion/04-Recursion Homework Example Problems - PRACTICE.ipynb
+        - 05-Recursion/05-Memoization.ipynb
+        - 05-Recursion/Recursion Interview Problems/01-Reverse-String/01-Reverse String - SOLUTION.ipynb
+        - 05-Recursion/Recursion Interview Problems/01-Reverse-String/01-Reverse String .ipynb
+        - 05-Recursion/Recursion Interview Problems/02-String-Permutation/02-String Permutation- SOLUTION.ipynb
+        - 05-Recursion/Recursion Interview Problems/02-String-Permutation/02-String Permutation.ipynb
+        - 05-Recursion/Recursion Interview Problems/03-Fibonacci-Sequence/03-Fibonacci Sequence - SOLUTION.ipynb
+        - 05-Recursion/Recursion Interview Problems/03-Fibonacci-Sequence/03-Fibonacci Sequence.ipynb
+        - 05-Recursion/Recursion Interview Problems/04-Coin-Change/04-Coin Change - SOLUTION.ipynb
+        - 05-Recursion/Recursion Interview Problems/04-Coin-Change/04-Coin Change.ipynb
+    - part: "06-Trees"
+      chapters:
+        - 06-Trees/01-Tree Representation Implementation (Lists).ipynb
+        - 06-Trees/02-Tree Representation Implementation (Nodes and References).ipynb
+        - 06-Trees/03-Binary Heap Implementation.ipynb
+        - 06-Trees/04-Binary Search Trees.ipynb
+        - 06-Trees/Trees Interview Problems/01-Binary-Search-Tree-Check/01-Binary Search Tree Check - SOLUTION.ipynb
+        - 06-Trees/Trees Interview Problems/01-Binary-Search-Tree-Check/01-Binary Search Tree Check.ipynb
+        - 06-Trees/Trees Interview Problems/02-Tree-Level-Order-Print/02-Tree Level Order Print - SOLUTION.ipynb
+        - 06-Trees/Trees Interview Problems/02-Tree-Level-Order-Print/02-Tree Level Order Print.ipynb
+        - 06-Trees/Trees Interview Problems/03-Trim-a-Binary-Search-Tree/03-Trim a Binary Search Tree .ipynb
+        - 06-Trees/Trees Interview Problems/03-Trim-a-Binary-Search-Tree/03Trim a Binary Search Tree - SOLUTION.ipynb
+    - part: "07-Searching and Sorting"
+      chapters:
+        - 07-Searching and Sorting/01-Sequential Search.ipynb
+        - 07-Searching and Sorting/02-Implementation of Binary Search.ipynb
+        - 07-Searching and Sorting/03-Implementation of a Hash Table.ipynb
+        - 07-Searching and Sorting/04-Implementation of Bubble Sort.ipynb
+        - 07-Searching and Sorting/05-Implementation of Selection Sort.ipynb
+        - 07-Searching and Sorting/06-Implementation of Insertion Sort.ipynb
+        - 07-Searching and Sorting/07-Implementation of Shell Sort.ipynb
+        - 07-Searching and Sorting/08-Implementation of Merge Sort.ipynb
+        - 07-Searching and Sorting/09-Implementation of Quick Sort.ipynb
+    - part: "08-Graphs"
+      chapters:
+        - 08-Graphs/01-Implementation of Graph Overview.ipynb
+        - 08-Graphs/02-Implementation of Adjacency List.ipynb
+        - 08-Graphs/03-Word Ladder Example Problem.ipynb
+        - 08-Graphs/04-Knight's Tour Example Problem.ipynb
+        - 08-Graphs/05-Implementation of Depth First Search.ipynb
+        - 08-Graphs/06-Implementation of Breadth First Search.ipynb
+        - 08-Graphs/Graph Interview Questions/01-Implement a Graph.ipynb
+        - 08-Graphs/Graph Interview Questions/02-Implement Depth First Search Algorithm.ipynb
+        - 08-Graphs/Graph Interview Questions/03-Implement Breadth First Search Algorithm.ipynb
+    - part: "09-Riddles"
+      chapters:
+        - 09-Riddles/01-How to Approach Riddles.ipynb
+        - 09-Riddles/Riddle Interview Problems/01-Bridge-Crossing/01-Bridge Crossing - SOLUTION.ipynb
+        - 09-Riddles/Riddle Interview Problems/01-Bridge-Crossing/01-Bridge Crossing.ipynb
+        - 09-Riddles/Riddle Interview Problems/02-Coins-and-a-Scale/02-Coins and a Scale - SOLUTION.ipynb
+        - 09-Riddles/Riddle Interview Problems/02-Coins-and-a-Scale/02-Coins and a Scale .ipynb
+        - 09-Riddles/Riddle Interview Problems/03-Egg-Drop/03-Egg Drop - SOLUTION.ipynb
+        - 09-Riddles/Riddle Interview Problems/03-Egg-Drop/03-Egg Drop .ipynb
+        - 09-Riddles/Riddle Interview Problems/04-Hallway-Lockers/04-Hallway Lockers -SOLUTION.ipynb
+        - 09-Riddles/Riddle Interview Problems/04-Hallway-Lockers/04-Hallway Lockers.ipynb
+        - 09-Riddles/Riddle Interview Problems/05-Jugs-of-Water/05-Jugs of Water - SOLUTION.ipynb
+        - 09-Riddles/Riddle Interview Problems/05-Jugs-of-Water/05-Jugs of Water .ipynb
+        - 09-Riddles/Riddle Interview Problems/06-Light-Switches/06-Light Switches - SOLUTION.ipynb
+        - 09-Riddles/Riddle Interview Problems/06-Light-Switches/06-Light Switches .ipynb
+        - 09-Riddles/Riddle Interview Problems/07-Ropes-Burning/07-Ropes Burning - SOLUTION.ipynb
+        - 09-Riddles/Riddle Interview Problems/07-Ropes-Burning/07-Ropes Burning.ipynb
+    - part: "10-Mock Interviews"
+      chapters:
+        - 10-Mock Interviews/01-Large E-Commerce Company/01-On-Site-Question-1/01-On-Site Question 1 - SOLUTION.ipynb
+        - 10-Mock Interviews/01-Large E-Commerce Company/01-On-Site-Question-1/01-On-Site Question 1.ipynb
+        - 10-Mock Interviews/01-Large E-Commerce Company/02-On-Site-Question-2/02-On-Site Question 2 - SOLUTION.ipynb
+        - 10-Mock Interviews/01-Large E-Commerce Company/02-On-Site-Question-2/02-On-Site Question 2 .ipynb
+        - 10-Mock Interviews/01-Large E-Commerce Company/03-On-Site-Question-3/03-On-Site Question 3 - SOLUTION.ipynb
+        - 10-Mock Interviews/01-Large E-Commerce Company/03-On-Site-Question-3/03-On-Site Question 3.ipynb
+        - 10-Mock Interviews/01-Large E-Commerce Company/04-Phone-Screen/04-Phone Screen - SOLUTION.ipynb
+        - 10-Mock Interviews/01-Large E-Commerce Company/04-Phone-Screen/04-Phone Screen .ipynb
+        - 10-Mock Interviews/02-Large Search Engine Company /01-On-Site-Question-1/01-On-Site Question 1 - SOLUTION.ipynb
+        - 10-Mock Interviews/02-Large Search Engine Company /01-On-Site-Question-1/01-On-Site Question 1 .ipynb
+        - 10-Mock Interviews/02-Large Search Engine Company /02-On-Site-Question-2/02-On-Site Question 2 - SOLUTION.ipynb
+        - 10-Mock Interviews/02-Large Search Engine Company /02-On-Site-Question-2/02-On-Site Question 2 .ipynb
+        - 10-Mock Interviews/02-Large Search Engine Company /03-On-Site-Question-3/03-On-Site Question 3 -SOLUTION.ipynb
+        - 10-Mock Interviews/02-Large Search Engine Company /03-On-Site-Question-3/03-On-Site Question 3 .ipynb
+        - 10-Mock Interviews/02-Large Search Engine Company /04-On-Site-Question-4/04-On-Site Question 4 - SOLUTION.ipynb
+        - 10-Mock Interviews/02-Large Search Engine Company /04-On-Site-Question-4/04-On-Site Question 4 .ipynb
+        - 10-Mock Interviews/02-Large Search Engine Company /05-Phone-Screen/05-Phone Screen-Solutions.ipynb
+        - 10-Mock Interviews/02-Large Search Engine Company /05-Phone-Screen/05-Phone Screen.ipynb
+        - 10-Mock Interviews/03-Ride Share Start-Up Company/01-On-Site-Quesion-1/On-Site Question 1 - SOLUTION.ipynb
+        - 10-Mock Interviews/03-Ride Share Start-Up Company/01-On-Site-Quesion-1/On-Site Question 1 .ipynb
+        - 10-Mock Interviews/03-Ride Share Start-Up Company/02-On-Site-Quesion-2/On-Site Question 2 - SOLUTION.ipynb
+        - 10-Mock Interviews/03-Ride Share Start-Up Company/02-On-Site-Quesion-2/On-Site Question 2 .ipynb
+        - 10-Mock Interviews/03-Ride Share Start-Up Company/03-On-Site-Quesion-3/On-Site Question 3 - SOLUTION.ipynb
+        - 10-Mock Interviews/03-Ride Share Start-Up Company/03-On-Site-Quesion-3/On-Site Question 3 .ipynb
+        - 10-Mock Interviews/03-Ride Share Start-Up Company/04-Phone-Screen/Phone Screen - SOLUTION.ipynb
+        - 10-Mock Interviews/03-Ride Share Start-Up Company/04-Phone-Screen/Phone Screen .ipynb
+        - 10-Mock Interviews/04-Social Network Company/01-On-Site-Question-1/On-Site Question 1 - SOLUTION.ipynb
+        - 10-Mock Interviews/04-Social Network Company/01-On-Site-Question-1/On-Site Question 1.ipynb
+        - 10-Mock Interviews/04-Social Network Company/02-On-Site-Question-2/On-Site Question 2 - SOLUTION.ipynb
+        - 10-Mock Interviews/04-Social Network Company/02-On-Site-Question-2/On-Site Question 2.ipynb
+        - 10-Mock Interviews/04-Social Network Company/03-On-Site-Question-3/On-Site Question 3 - SOLUTION.ipynb
+        - 10-Mock Interviews/04-Social Network Company/03-On-Site-Question-3/On-Site Question 3.ipynb
+        - 10-Mock Interviews/04-Social Network Company/04-Phone-Screen/Phone Screen - SOLUTION.ipynb
+        - 10-Mock Interviews/04-Social Network Company/04-Phone-Screen/Phone Screen .ipynb
+    - part: "Linked Lists"
+      chapters:
+        - Linked Lists/Linked Lists Interview Problems/Linked List Interview Problems/Implement a Doubly Linked List.ipynb
+        - Linked Lists/Linked Lists Interview Problems/Linked List Interview Problems/Implement a Singly Linked List.ipynb
+        - Linked Lists/Linked Lists Interview Problems/Linked List Interview Problems/Linked List Nth to Last Node .ipynb
+        - Linked Lists/Linked Lists Interview Problems/Linked List Interview Problems/Linked List Reversal .ipynb
+        - Linked Lists/Linked Lists Interview Problems/Linked List Interview Problems/Singly Linked List Cycle Check.ipynb
+    - part: "Mock Interviews"
+      chapters:
+        - Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems - SOLUTIONS/On-Site Question 1 - SOLUTION.ipynb
+        - Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems - SOLUTIONS/On-Site Question 2 - SOLUTION.ipynb
+        - Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems - SOLUTIONS/On-Site Question 3 -SOLUTION.ipynb
+        - Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems - SOLUTIONS/On-Site Question 4 - SOLUTION.ipynb
+        - Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems - SOLUTIONS/Phone Screen.ipynb
+        - Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems/On-Site Question 1 .ipynb
+        - Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems/On-Site Question 2 .ipynb
+        - Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems/On-Site Question 3 .ipynb
+        - Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems/On-Site Question 4 .ipynb
+        - Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems/Phone Screen.ipynb
+        - Mock Interviews/Ride Share Start-Up Company/Ride Share Company - Interview Questions/On-Site Question 1 .ipynb
+        - Mock Interviews/Ride Share Start-Up Company/Ride Share Company - Interview Questions/On-Site Question 2 .ipynb
+        - Mock Interviews/Ride Share Start-Up Company/Ride Share Company - Interview Questions/On-Site Question 3 .ipynb
+        - Mock Interviews/Ride Share Start-Up Company/Ride Share Company - Interview Questions/Phone Screen .ipynb
+        - Mock Interviews/Social Network Company/Social Network Company - Interview Questions/On-Site Question 1.ipynb
+        - Mock Interviews/Social Network Company/Social Network Company - Interview Questions/On-Site Question 2.ipynb
+        - Mock Interviews/Social Network Company/Social Network Company - Interview Questions/On-Site Question 3.ipynb
+        - Mock Interviews/Social Network Company/Social Network Company - Interview Questions/Phone Screen .ipynb
+    - part: "Riddles"
+      chapters:
+        - Riddles/Riddle Interview Problems/Riddle Interview Problems/Bridge Crossing.ipynb
+        - Riddles/Riddle Interview Problems/Riddle Interview Problems/Coins and a Scale .ipynb
+        - Riddles/Riddle Interview Problems/Riddle Interview Problems/Egg Drop .ipynb
+        - Riddles/Riddle Interview Problems/Riddle Interview Problems/Hallway Lockers.ipynb
+        - Riddles/Riddle Interview Problems/Riddle Interview Problems/Jugs of Water .ipynb
+        - Riddles/Riddle Interview Problems/Riddle Interview Problems/Light Switches .ipynb
+        - Riddles/Riddle Interview Problems/Riddle Interview Problems/Ropes Burning.ipynb
+    - part: "Stacks, Queues and Deques"
+      chapters:
+        - Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/Stacks, Queues, Deques Interview Questions/Balanced Parentheses Check .ipynb
+        - Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/Stacks, Queues, Deques Interview Questions/Implement a Deque .ipynb
+        - Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/Stacks, Queues, Deques Interview Questions/Implement a Queue -Using Two Stacks .ipynb
+        - Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/Stacks, Queues, Deques Interview Questions/Implement a Queue.ipynb
+        - Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/Stacks, Queues, Deques Interview Questions/Implement a Stack .ipynb
+    - Practice.ipynb
+    - Reflect Notes.ipynb
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    number-sections: false
