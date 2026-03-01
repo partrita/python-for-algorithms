@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Implementation of a Graph as an Adjacency List – python-algorithms</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../08-Graphs/03-Word Ladder Example Problem.html" rel="next">
+<link href="../08-Graphs/01-Implementation of Graph Overview.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-3778d3e438078121318a23701f9f68bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../08-Graphs/01-Implementation of Graph Overview.html">08-Graphs</a></li><li class="breadcrumb-item"><a href="../08-Graphs/02-Implementation of Adjacency List.html"><span class="chapter-title">Implementation of a Graph as an Adjacency List</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">python-algorithms</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Python for Algorithms, Data-Structures, and Interviews!</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">01-Algorithm Analysis and Big O</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01-Algorithm Analysis and Big O/01-Introduction to Algorithm Analysis and Big O .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction to Algorithm Analysis and Big O</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01-Algorithm Analysis and Big O/02-Big O Notation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Big O Notation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01-Algorithm Analysis and Big O/03-Big O Examples .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Big O Examples</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01-Algorithm Analysis and Big O/04-Big O for Python Data Structures.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Big O for Python Data Structures</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01-Algorithm Analysis and Big O/05-Algorithm Analysis and Big O Quiz.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Quiz is offered only in the course!</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">02-Array Sequences</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/01-Introduction to Array Based Sequences.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction to Array Based Sequences</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/02-Low Level Arrays.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Low Level Arrays</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/03-Dynamic Array.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Dynamic Arrays</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/04-Dynamic Array Exercise.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Dynamic Array Exercise</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/05-Amortization.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Amortization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/06-Array Mini-Project.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Array Mini-Project</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/01-Anagram-Check/01-Anagram Check - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Anagram Solution</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/01-Anagram-Check/01-Anagram Check .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Anagram Check</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/02-Array-Pair-Sum/02-Array Pair Sum - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Array Pair Sum</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/02-Array-Pair-Sum/02-Array Pair Sum .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Array Pair Sum</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/03-Finding-the-Missing-Element/03-Find the Missing Element - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Find the Missing Element</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/03-Finding-the-Missing-Element/03-Find the Missing Element .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Find the Missing Element</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/04-Largest-Continuous-Sum/04-Largest Continuous Sum - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Largest Continuous Sum</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/04-Largest-Continuous-Sum/04-Largest Continuous Sum .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Largest Continuous Sum</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/05-Sentence-Reversal/05-Sentence Reversal - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Sentence Reversal</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/05-Sentence-Reversal/05-Sentence Reversal.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Sentence Reversal</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/06-String-Compression/06-String Compression -SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">String Compression</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/06-String-Compression/06-String Compression .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">String Compression</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/07-Unique-Characters-in-String/07-Unique Characters in String - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Unique Characters in String</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../02-Array Sequences/Array Sequences Interview Questions/07-Unique-Characters-in-String/07-Unique Characters in String.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Unique Characters in String</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">03-Stacks, Queues and Deques</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/01-Stacks, Queues, and Deques Overview.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Stacks, Queues, and Deques Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/02-Stacks Overview.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Stacks Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/03-Implementation of Stack.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of Stack</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/04-Queues Overview.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Queues Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/05-Implementation of Queue.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of Queue</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/06-Deques Overview.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Deques Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/07-Implementation of Deque.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of Deque</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/01-Implement-a-Stack/01-Implement a Stack - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Stack -SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/01-Implement-a-Stack/01-Implement a Stack .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Stack</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/02-Implement-a-Queue/02-Implement a Queue - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Queue - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/02-Implement-a-Queue/02-Implement a Queue.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Queue</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/03-Implement-a-Deque/03-Implement a Deque - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Deque - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/03-Implement-a-Deque/03-Implement a Deque .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Deque</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/04-Balanced-Parantheses-Check/04-Balanced Parentheses Check - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Balanced Parentheses Check - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/04-Balanced-Parantheses-Check/04-Balanced Parentheses Check .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Balanced Parentheses Check</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/05-Implement-a-Queue-Using-Two-Stacks/05-Implement a Queue -Using Two Stacks - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Queue - Using Two Stacks - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../03-Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/05-Implement-a-Queue-Using-Two-Stacks/05-Implement a Queue -Using Two Stacks .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Queue - Using Two Stacks</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">04-Linked Lists</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/01-Linked List Overview.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Linked Lists</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/02-Singly Linked Lists.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Singly Linked Lists</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/03-Singly Linked List Implementation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Singly Linked List Implementation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/04-Doubly Linked Lists.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Doubly Linked Lists</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/05-Doubly Linked List Implementation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Doubly Linked List Implementation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/Linked Lists Interview Problems/01-Singly-Linked-List-Cycle-Check/01-Singly Linked List Cycle Check - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Singly Linked List Cycle Check - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/Linked Lists Interview Problems/01-Singly-Linked-List-Cycle-Check/01-Singly Linked List Cycle Check.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Singly Linked List Cycle Check</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/Linked Lists Interview Problems/02-Linked-List-Reversal/02-Linked List Reversal - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Linked List Reversal - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/Linked Lists Interview Problems/02-Linked-List-Reversal/02-Linked List Reversal .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Linked List Reversal</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/Linked Lists Interview Problems/03-Linked-List-Nth-to-Last-Node/03-Linked List Nth to Last Node - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Linked List Nth to Last Node - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/Linked Lists Interview Problems/03-Linked-List-Nth-to-Last-Node/03-Linked List Nth to Last Node .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Linked List Nth to Last Node</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/Linked Lists Interview Problems/04-Implement-a-Doubly-Linked-List/04-Implement a Doubly Linked List.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Doubly Linked List</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/Linked Lists Interview Problems/04-Implement-a-Doubly-Linked-List/04-Implement a Linked List -SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Linked List - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04-Linked Lists/Linked Lists Interview Problems/05-Implement-a-Singly-Linked-List/05-Implement a Singly Linked List.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Singly Linked List</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">05-Recursion</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/01-Introduction to Recursion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction to Recursion</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/02-Recursion Homework Example Problems.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Recursion Homework Problems</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/03-Recursion Homework Example Problems - SOLUTIONS.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Recursion Homework Problems - Solutions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/04-Recursion Homework Example Problems - PRACTICE.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Recursion Homework Problems</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/05-Memoization.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Memoization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/Recursion Interview Problems/01-Reverse-String/01-Reverse String - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Reverse a String</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/Recursion Interview Problems/01-Reverse-String/01-Reverse String .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Reverse a String</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/Recursion Interview Problems/02-String-Permutation/02-String Permutation- SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">String Permutation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/Recursion Interview Problems/02-String-Permutation/02-String Permutation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">String Permutation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/Recursion Interview Problems/03-Fibonacci-Sequence/03-Fibonacci Sequence - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Fibonnaci Sequence</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/Recursion Interview Problems/03-Fibonacci-Sequence/03-Fibonacci Sequence.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Fibonnaci Sequence</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/Recursion Interview Problems/04-Coin-Change/04-Coin Change - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Coin Change Problem</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05-Recursion/Recursion Interview Problems/04-Coin-Change/04-Coin Change.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Coin Change Problem</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">06-Trees</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06-Trees/01-Tree Representation Implementation (Lists).html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tree Representation Implementation (Lists)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06-Trees/02-Tree Representation Implementation (Nodes and References).html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Nodes and References Implementation of a Tree</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06-Trees/03-Binary Heap Implementation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Binary Heap Implementation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06-Trees/04-Binary Search Trees.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Binary Search Trees</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06-Trees/Trees Interview Problems/01-Binary-Search-Tree-Check/01-Binary Search Tree Check - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Binary Search Tree Check - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06-Trees/Trees Interview Problems/01-Binary-Search-Tree-Check/01-Binary Search Tree Check.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Binary Search Tree Check</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06-Trees/Trees Interview Problems/02-Tree-Level-Order-Print/02-Tree Level Order Print - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tree Level Order Print - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06-Trees/Trees Interview Problems/02-Tree-Level-Order-Print/02-Tree Level Order Print.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tree Level Order Print</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06-Trees/Trees Interview Problems/03-Trim-a-Binary-Search-Tree/03-Trim a Binary Search Tree .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Trim a Binary Search Tree</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06-Trees/Trees Interview Problems/03-Trim-a-Binary-Search-Tree/03Trim a Binary Search Tree - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Trim a Binary Search Tree - SOLUTION</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">07-Searching and Sorting</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07-Searching and Sorting/01-Sequential Search.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Sequential Search</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07-Searching and Sorting/02-Implementation of Binary Search.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of Binary Search</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07-Searching and Sorting/03-Implementation of a Hash Table.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of a Hash Table</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07-Searching and Sorting/04-Implementation of Bubble Sort.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of a Bubble Sort</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07-Searching and Sorting/05-Implementation of Selection Sort.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of Selection Sort</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07-Searching and Sorting/06-Implementation of Insertion Sort.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of Insertion Sort</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07-Searching and Sorting/07-Implementation of Shell Sort.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of Shell Sort</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07-Searching and Sorting/08-Implementation of Merge Sort.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of Merge Sort</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07-Searching and Sorting/09-Implementation of Quick Sort.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of Quick Sort</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">08-Graphs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08-Graphs/01-Implementation of Graph Overview.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of Graph Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08-Graphs/02-Implementation of Adjacency List.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Implementation of a Graph as an Adjacency List</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08-Graphs/03-Word Ladder Example Problem.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Word Ladder Example Code</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08-Graphs/04-Knight's Tour Example Problem.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Knight’s Tour Code</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08-Graphs/05-Implementation of Depth First Search.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of Depth-First Search</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08-Graphs/06-Implementation of Breadth First Search.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implementation of Breadth First Search</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08-Graphs/Graph Interview Questions/01-Implement a Graph.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Graph Class!</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08-Graphs/Graph Interview Questions/02-Implement Depth First Search Algorithm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Depth First Search Algorithm</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08-Graphs/Graph Interview Questions/03-Implement Breadth First Search Algorithm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Breadth First Search Algorithm</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text">09-Riddles</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/01-How to Approach Riddles.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">How to Approach Riddles</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/01-Bridge-Crossing/01-Bridge Crossing - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Bridge Crossing - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/01-Bridge-Crossing/01-Bridge Crossing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Bridge Crossing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/02-Coins-and-a-Scale/02-Coins and a Scale - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Coins and a Scale - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/02-Coins-and-a-Scale/02-Coins and a Scale .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Coins and a Scale</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/03-Egg-Drop/03-Egg Drop - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Egg Drop - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/03-Egg-Drop/03-Egg Drop .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Egg Drop</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/04-Hallway-Lockers/04-Hallway Lockers -SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Hallway Lockers - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/04-Hallway-Lockers/04-Hallway Lockers.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Hallway Lockers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/05-Jugs-of-Water/05-Jugs of Water - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Jugs of Water - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/05-Jugs-of-Water/05-Jugs of Water .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Jugs of Water</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/06-Light-Switches/06-Light Switches - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Light Switches - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/06-Light-Switches/06-Light Switches .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Light Switches</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/07-Ropes-Burning/07-Ropes Burning - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Ropes Burning - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../09-Riddles/Riddle Interview Problems/07-Ropes-Burning/07-Ropes Burning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Ropes Burning</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text">10-Mock Interviews</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/01-Large E-Commerce Company/01-On-Site-Question-1/01-On-Site Question 1 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 1 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/01-Large E-Commerce Company/01-On-Site-Question-1/01-On-Site Question 1.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/01-Large E-Commerce Company/02-On-Site-Question-2/02-On-Site Question 2 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 2 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/01-Large E-Commerce Company/02-On-Site-Question-2/02-On-Site Question 2 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/01-Large E-Commerce Company/03-On-Site-Question-3/03-On-Site Question 3 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 3 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/01-Large E-Commerce Company/03-On-Site-Question-3/03-On-Site Question 3.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/01-Large E-Commerce Company/04-Phone-Screen/04-Phone Screen - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Phone Screen - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/01-Large E-Commerce Company/04-Phone-Screen/04-Phone Screen .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Phone Screen</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/02-Large Search Engine Company /01-On-Site-Question-1/01-On-Site Question 1 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 1 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/02-Large Search Engine Company /01-On-Site-Question-1/01-On-Site Question 1 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/02-Large Search Engine Company /02-On-Site-Question-2/02-On-Site Question 2 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 2 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/02-Large Search Engine Company /02-On-Site-Question-2/02-On-Site Question 2 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/02-Large Search Engine Company /03-On-Site-Question-3/03-On-Site Question 3 -SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 3 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/02-Large Search Engine Company /03-On-Site-Question-3/03-On-Site Question 3 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/02-Large Search Engine Company /04-On-Site-Question-4/04-On-Site Question 4 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 4 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/02-Large Search Engine Company /04-On-Site-Question-4/04-On-Site Question 4 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 4</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/02-Large Search Engine Company /05-Phone-Screen/05-Phone Screen-Solutions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Phone Screen</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/02-Large Search Engine Company /05-Phone-Screen/05-Phone Screen.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Phone Screen</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/03-Ride Share Start-Up Company/01-On-Site-Quesion-1/On-Site Question 1 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 1 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/03-Ride Share Start-Up Company/01-On-Site-Quesion-1/On-Site Question 1 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/03-Ride Share Start-Up Company/02-On-Site-Quesion-2/On-Site Question 2 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 2 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/03-Ride Share Start-Up Company/02-On-Site-Quesion-2/On-Site Question 2 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/03-Ride Share Start-Up Company/03-On-Site-Quesion-3/On-Site Question 3 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 3 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/03-Ride Share Start-Up Company/03-On-Site-Quesion-3/On-Site Question 3 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/03-Ride Share Start-Up Company/04-Phone-Screen/Phone Screen - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Phone Screen - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/03-Ride Share Start-Up Company/04-Phone-Screen/Phone Screen .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Phone Screen</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/04-Social Network Company/01-On-Site-Question-1/On-Site Question 1 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 1 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/04-Social Network Company/01-On-Site-Question-1/On-Site Question 1.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/04-Social Network Company/02-On-Site-Question-2/On-Site Question 2 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 2 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/04-Social Network Company/02-On-Site-Question-2/On-Site Question 2.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/04-Social Network Company/03-On-Site-Question-3/On-Site Question 3 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 3 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/04-Social Network Company/03-On-Site-Question-3/On-Site Question 3.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/04-Social Network Company/04-Phone-Screen/Phone Screen - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Phone Screen - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../10-Mock Interviews/04-Social Network Company/04-Phone-Screen/Phone Screen .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Phone Screen</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text">Linked Lists</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Linked Lists/Linked Lists Interview Problems/Linked List Interview Problems/Implement a Doubly Linked List.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Doubly Linked List</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Linked Lists/Linked Lists Interview Problems/Linked List Interview Problems/Implement a Singly Linked List.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Singly Linked List</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Linked Lists/Linked Lists Interview Problems/Linked List Interview Problems/Linked List Nth to Last Node .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Linked List Nth to Last Node</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Linked Lists/Linked Lists Interview Problems/Linked List Interview Problems/Linked List Reversal .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Linked List Reversal</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Linked Lists/Linked Lists Interview Problems/Linked List Interview Problems/Singly Linked List Cycle Check.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Singly Linked List Cycle Check</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true">
+ <span class="menu-text">Mock Interviews</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems - SOLUTIONS/On-Site Question 1 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 1 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems - SOLUTIONS/On-Site Question 2 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 2 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems - SOLUTIONS/On-Site Question 3 -SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 3 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems - SOLUTIONS/On-Site Question 4 - SOLUTION.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 4 - SOLUTION</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems - SOLUTIONS/Phone Screen.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Phone Screen</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems/On-Site Question 1 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems/On-Site Question 2 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems/On-Site Question 3 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems/On-Site Question 4 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 4</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Large Search Engine Company/Search Engine Company - Interview Problems/Phone Screen.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Phone Screen</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Ride Share Start-Up Company/Ride Share Company - Interview Questions/On-Site Question 1 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Ride Share Start-Up Company/Ride Share Company - Interview Questions/On-Site Question 2 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Ride Share Start-Up Company/Ride Share Company - Interview Questions/On-Site Question 3 .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Ride Share Start-Up Company/Ride Share Company - Interview Questions/Phone Screen .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Phone Screen</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Social Network Company/Social Network Company - Interview Questions/On-Site Question 1.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Social Network Company/Social Network Company - Interview Questions/On-Site Question 2.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Social Network Company/Social Network Company - Interview Questions/On-Site Question 3.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">On-Site Question 3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Mock Interviews/Social Network Company/Social Network Company - Interview Questions/Phone Screen .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Phone Screen</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
+ <span class="menu-text">Riddles</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Riddles/Riddle Interview Problems/Riddle Interview Problems/Bridge Crossing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Bridge Crossing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Riddles/Riddle Interview Problems/Riddle Interview Problems/Coins and a Scale .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Coins and a Scale</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Riddles/Riddle Interview Problems/Riddle Interview Problems/Egg Drop .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Egg Drop</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Riddles/Riddle Interview Problems/Riddle Interview Problems/Hallway Lockers.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Hallway Lockers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Riddles/Riddle Interview Problems/Riddle Interview Problems/Jugs of Water .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Jugs of Water</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Riddles/Riddle Interview Problems/Riddle Interview Problems/Light Switches .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Light Switches</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Riddles/Riddle Interview Problems/Riddle Interview Problems/Ropes Burning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Ropes Burning</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="true">
+ <span class="menu-text">Stacks, Queues and Deques</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/Stacks, Queues, Deques Interview Questions/Balanced Parentheses Check .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Balanced Parentheses Check</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/Stacks, Queues, Deques Interview Questions/Implement a Deque .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Deque</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/Stacks, Queues, Deques Interview Questions/Implement a Queue -Using Two Stacks .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Queue - Using Two Stacks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/Stacks, Queues, Deques Interview Questions/Implement a Queue.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Queue</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Stacks, Queues and Deques/Stacks, Queues, and Deques Interview Problems/Stacks, Queues, Deques Interview Questions/Implement a Stack .html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Implement a Stack</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Practice.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Practice.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Reflect Notes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Array</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#great-job" id="toc-great-job" class="nav-link active" data-scroll-target="#great-job">Great Job!</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../08-Graphs/01-Implementation of Graph Overview.html">08-Graphs</a></li><li class="breadcrumb-item"><a href="../08-Graphs/02-Implementation of Adjacency List.html"><span class="chapter-title">Implementation of a Graph as an Adjacency List</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Implementation of a Graph as an Adjacency List</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Using dictionaries, it is easy to implement the adjacency list in Python. In our implementation of the Graph abstract data type we will create two classes: <strong>Graph</strong>, which holds the master list of vertices, and <strong>Vertex</strong>, which will represent each vertex in the graph.</p>
+<p>Each Vertex uses a dictionary to keep track of the vertices to which it is connected, and the weight of each edge. This dictionary is called <strong>connectedTo</strong>. The constructor simply initializes the id, which will typically be a string, and the <strong>connectedTo</strong> dictionary. The <strong>addNeighbor</strong> method is used add a connection from this vertex to another. The <strong>getConnections</strong> method returns all of the vertices in the adjacency list, as represented by the <strong>connectedTo</strong> instance variable. The <strong>getWeight</strong> method returns the weight of the edge from this vertex to the vertex passed as a parameter.</p>
+<div id="cell-1" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Vertex:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, key):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.<span class="bu">id</span> <span class="op">=</span> key</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.connectedTo <span class="op">=</span> {}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> addNeighbor(<span class="va">self</span>, nbr, weight<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.connectedTo[nbr] <span class="op">=</span> weight</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">str</span>(<span class="va">self</span>.<span class="bu">id</span>) <span class="op">+</span> <span class="st">" connectedTo: "</span> <span class="op">+</span> <span class="bu">str</span>([x.<span class="bu">id</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="va">self</span>.connectedTo])</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> getConnections(<span class="va">self</span>):</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.connectedTo.keys()</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> getId(<span class="va">self</span>):</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.<span class="bu">id</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> getWeight(<span class="va">self</span>, nbr):</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.connectedTo[nbr]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>In order to implement a Graph as an Adjacency List what we need to do is define the methods our Adjacency List object will have:</p>
+<ul>
+<li><strong>Graph()</strong> creates a new, empty graph.</li>
+<li><strong>addVertex(vert)</strong> adds an instance of Vertex to the graph.</li>
+<li><strong>addEdge(fromVert, toVert)</strong> Adds a new, directed edge to the graph that connects two vertices.</li>
+<li><strong>addEdge(fromVert, toVert, weight)</strong> Adds a new, weighted, directed edge to the graph that connects two vertices.</li>
+<li><strong>getVertex(vertKey)</strong> finds the vertex in the graph named vertKey.</li>
+<li><strong>getVertices()</strong> returns the list of all vertices in the graph.</li>
+<li><strong>in</strong> returns True for a statement of the form vertex in graph, if the given vertex is in the graph, False otherwise.</li>
+</ul>
+<div id="cell-3" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Graph:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vertList <span class="op">=</span> {}</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.numVertices <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> addVertex(<span class="va">self</span>, key):</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.numVertices <span class="op">=</span> <span class="va">self</span>.numVertices <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        newVertex <span class="op">=</span> Vertex(key)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vertList[key] <span class="op">=</span> newVertex</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> newVertex</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> getVertex(<span class="va">self</span>, n):</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n <span class="kw">in</span> <span class="va">self</span>.vertList:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">self</span>.vertList[n]</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__contains__</span>(<span class="va">self</span>, n):</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> n <span class="kw">in</span> <span class="va">self</span>.vertList</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> addEdge(<span class="va">self</span>, f, t, cost<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> f <span class="kw">not</span> <span class="kw">in</span> <span class="va">self</span>.vertList:</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>            nv <span class="op">=</span> <span class="va">self</span>.addVertex(f)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> t <span class="kw">not</span> <span class="kw">in</span> <span class="va">self</span>.vertList:</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>            nv <span class="op">=</span> <span class="va">self</span>.addVertex(t)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vertList[f].addNeighbor(<span class="va">self</span>.vertList[t], cost)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> getVertices(<span class="va">self</span>):</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.vertList.keys()</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__iter__</span>(<span class="va">self</span>):</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">iter</span>(<span class="va">self</span>.vertList.values())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Let’s see a simple example of how to use this:</p>
+<div id="cell-5" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> Graph()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    g.addVertex(i)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-6" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>g.vertList</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>{0: &lt;__main__.Vertex at 0x7fc9084f7e50&gt;,
+ 1: &lt;__main__.Vertex at 0x7fc9084f7fd0&gt;,
+ 2: &lt;__main__.Vertex at 0x7fc9084f7940&gt;,
+ 3: &lt;__main__.Vertex at 0x7fc9084f7eb0&gt;,
+ 4: &lt;__main__.Vertex at 0x7fc9084f7f40&gt;,
+ 5: &lt;__main__.Vertex at 0x7fc9084f7ac0&gt;}</code></pre>
+</div>
+</div>
+<div id="cell-7" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>g.addEdge(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-8" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> vertex <span class="kw">in</span> g:</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(vertex)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(vertex.getConnections())</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 connectedTo: [1]
+dict_keys([&lt;__main__.Vertex object at 0x7fc9084f7fd0&gt;])
+
+
+1 connectedTo: []
+dict_keys([])
+
+
+2 connectedTo: []
+dict_keys([])
+
+
+3 connectedTo: []
+dict_keys([])
+
+
+4 connectedTo: []
+dict_keys([])
+
+
+5 connectedTo: []
+dict_keys([])
+
+</code></pre>
+</div>
+</div>
+<section id="great-job" class="level1">
+<h1>Great Job!</h1>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../08-Graphs/01-Implementation of Graph Overview.html" class="pagination-link" aria-label="Implementation of Graph Overview">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Implementation of Graph Overview</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../08-Graphs/03-Word Ladder Example Problem.html" class="pagination-link" aria-label="Word Ladder Example Code">
+        <span class="nav-page-text"><span class="chapter-title">Word Ladder Example Code</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
